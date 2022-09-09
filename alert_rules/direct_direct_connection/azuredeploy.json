@@ -3,8 +3,8 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "workspace": {
-            "type": "String",
-            "defaultValue" : "pr-central-la"
+            "type": "String"
+            
         }
     },
     "resources": [
