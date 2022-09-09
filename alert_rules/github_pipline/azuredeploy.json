@@ -1,0 +1,53 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workspace": {
+            "type": "String"
+        }
+    },
+    "resources": [
+        {
+            "id": "[concat(resourceId('Microsoft.OperationalInsights/workspaces/providers', parameters('workspace'), 'Microsoft.SecurityInsights'),'/alertRules/37304a31-7c01-4940-91da-543685cf1102')]",
+            "name": "[concat(parameters('workspace'),'/Microsoft.SecurityInsights/37304a31-7c01-4940-91da-543685cf1102')]",
+            "type": "Microsoft.OperationalInsights/workspaces/providers/alertRules",
+            "kind": "Scheduled",
+            "apiVersion": "2022-09-01-preview",
+            "properties": {
+                "displayName": "BoI_pipeline - MCT_PROD | Missing Server Heartbeat > 1 Day",
+                "description": "",
+                "severity": "Medium",
+                "enabled": true,
+                "query": "let mct_PROD = \"d5b95d08-cf60-4d30-892d-2ceb187d75c3\";\r\nlet vs_PROD = \"caf16bab-b20f-449e-a538-7a1882ce6d37\";\r\nlet missing_period = 1d;\r\nHeartbeat\r\n| where TimeGenerated < ago(missing_period)\r\n| summarize LastHeartbeat = max(TimeGenerated) by Computer\r\n| extend State = iff(LastHeartbeat < ago(1d), 'Unhealthy', 'Healthy')\r\n| extend TimeFromNow = now() - LastHeartbeat\r\n| extend [\"TimeAgo\"] = strcat(case(TimeFromNow < 2m, strcat(toint(TimeFromNow / 1m), ' seconds'), TimeFromNow < 2h, strcat(toint(TimeFromNow / 1m), ' minutes'), TimeFromNow < 2d, strcat(toint(TimeFromNow / 1h), ' hours'), strcat(toint(TimeFromNow / 1d), ' days')), ' ago')\r\n| join (\r\nHeartbeat\r\n| where TimeGenerated < ago(missing_period)\r\n| extend Packed = pack_all()\r\n) on Computer\r\n| where TimeGenerated == LastHeartbeat\r\n| extend Customer = _SubscriptionId\r\n| where _SubscriptionId in ( mct_PROD, vs_PROD )\r\n| project Computer, ComputerIP, ComputerPrivateIPs  ,State, LastHeartbeat, Customer, Category, TimeAgo, TimeFromNow,OSType, OSName, Version, IsGatewayInstalled\r\n\r\n",
+                "queryFrequency": "P1D",
+                "queryPeriod": "P2D",
+                "triggerOperator": "GreaterThan",
+                "triggerThreshold": 0,
+                "suppressionDuration": "PT5H",
+                "suppressionEnabled": false,
+                "tactics": [],
+                "techniques": [],
+                "alertRuleTemplateName": null,
+                "incidentConfiguration": {
+                    "createIncident": true,
+                    "groupingConfiguration": {
+                        "enabled": true,
+                        "reopenClosedIncident": false,
+                        "lookbackDuration": "PT5H",
+                        "matchingMethod": "AllEntities",
+                        "groupByEntities": [],
+                        "groupByAlertDetails": [],
+                        "groupByCustomDetails": []
+                    }
+                },
+                "eventGroupingSettings": {
+                    "aggregationKind": "SingleAlert"
+                },
+                "alertDetailsOverride": null,
+                "customDetails": null,
+                "entityMappings": null,
+                "sentinelEntitiesMappings": null
+            }
+        }
+    ]
+}
