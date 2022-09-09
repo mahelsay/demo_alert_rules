@@ -20,7 +20,7 @@ steps:
         resourceGroupName: 'pr-logging-rg01'
         location: 'West Europe'
         templateLocation: 'URL of the file'
-        csmFileLink: 'https://raw.githubusercontent.com/mahelsay/demo_alert_rules/main/alert_rules/github_pipline/azuredeploy.json?token=GHSAT0AAAAAABYSJ3I42HNATZEISP3R5H3KYY26QIQ'
+        csmFileLink: 'https://raw.githubusercontent.com/mahelsay/demo_alert_rules/main/alert_rules/github_pipline/azuredeploy.json?token=GHSAT0AAAAAABYSJ3I4CRPAMMTJHNYNTYMCYY267NA'
         overrideParameters: '-projectName SOC-IaC'
         deploymentMode: 'Incremental'
         deploymentName: 'BoI_Test_Pipeline'
