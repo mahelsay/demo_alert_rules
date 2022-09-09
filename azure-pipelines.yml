@@ -1,0 +1,26 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+
+    - task: AzureResourceManagerTemplateDeployment@3
+      inputs:
+        deploymentScope: 'Resource Group'
+        azureResourceManagerConnection: 'boi_test_pipeline'
+        subscriptionId: 'e937e59c-2961-4f83-b289-c172db5d375c'
+        action: 'Create Or Update Resource Group'
+        resourceGroupName: 'pr-logging-rg01'
+        location: 'West Europe'
+        templateLocation: 'URL of the file'
+        csmFileLink: 'https://raw.githubusercontent.com/mahelsay/demo_alert_rules/main/alert_rules/github_pipline/azuredeploy.json?token=GHSAT0AAAAAABYSJ3I4CRPAMMTJHNYNTYMCYY267NA'
+#        overrideParameters: '-projectName SOC-IaC'
+        deploymentMode: 'Incremental'
+        deploymentName: 'BoI_Test_Pipeline'
