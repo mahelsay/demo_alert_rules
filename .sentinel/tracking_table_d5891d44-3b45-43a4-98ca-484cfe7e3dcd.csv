@@ -1,4 +1,0 @@
-FileName, CommitSha
-alert_rules/direct_direct_connection/azuredeploy.json,816f0addcdafa843c14370ac695ec021b1c0ce38
-alert_rules/github_pipline/azuredeploy.json,b49c1180b837bf1ce37286f1463f6e9692b84a11
-alert_rules/azuredeploy.json,fd54443b30f17786850bca41d26b824b8231955e
